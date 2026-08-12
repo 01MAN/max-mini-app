@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое Первое Мини-Приложение</title>
+    <style>
+        /* Здесь мы настраиваем внешний вид (дизайн) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 350px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        button:active {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Это то, что пользователь увидит на экране -->
+    <div class="card">
+        <h2>Привет в МАКС! 🚀</h2>
+        <p>Это твое первое работающее мини-приложение.</p>
+        <button onclick="sayHello()">Нажми на меня</button>
+    </div>
+
+    <script>
+        // А это простейшая логика (кнопка)
+        function sayHello() {
+            alert("Ура! Код работает!");
+        }
+    </script>
+
+</body>
+</html>
