@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>СШОР Художественная Гимнастика</title>
     <style>
         body {
@@ -10,58 +10,66 @@
             background-color: #f8f9fa;
             color: #212529;
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            -webkit-tap-highlight-color: transparent;
         }
         .container {
             width: 100%;
             max-width: 400px;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
             overflow: hidden;
-            padding-bottom: 20px;
+            padding-bottom: 16px;
         }
         .header {
             background: linear-gradient(135deg, #6610f2, #6f42c1);
             color: white;
-            padding: 30px 20px;
+            padding: 24px 16px;
             text-align: center;
         }
         .header h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
+            letter-spacing: 0.3px;
         }
         .header p {
-            margin: 8px 0 0 0;
-            font-size: 14px;
+            margin: 6px 0 0 0;
+            font-size: 13px;
             opacity: 0.9;
         }
         .content-padding {
-            padding: 20px;
+            padding: 16px;
         }
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: #f1f3f5;
+            padding: 4px;
+            border-radius: 12px;
         }
         .tab-btn {
             flex: 1;
-            background: #e9ecef;
+            background: transparent;
             border: none;
-            padding: 10px 5px;
-            border-radius: 10px;
+            padding: 10px 2px;
+            border-radius: 9px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
+            color: #495057;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
         .tab-btn.active {
-            background: #6f42c1;
-            color: white;
+            background: white;
+            color: #6f42c1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .tab-content {
             display: none;
@@ -69,29 +77,69 @@
         .tab-content.active {
             display: block;
         }
-        .info-card {
+        
+        /* Стили аккордеона (раскрывающихся списков) */
+        .accordion-item {
             background: #f8f9fa;
-            border-left: 4px solid #6f42c1;
-            padding: 12px;
-            border-radius: 4px 12px 12px 4px;
-            margin-bottom: 12px;
-        }
-        .info-card h3 {
-            margin: 0 0 6px 0;
-            font-size: 16px;
-        }
-        .info-card p {
-            margin: 0;
-            font-size: 14px;
-            color: #6c757d;
-        }
-        /* Стиль для окна с сайтом */
-        .web-frame {
-            width: 100%;
-            height: 400px;
-            border: none;
             border-radius: 12px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+        .accordion-header {
+            padding: 14px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #212529;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .accordion-header::after {
+            content: '▼';
+            font-size: 10px;
+            color: #6c757d;
+            transition: transform 0.2s;
+        }
+        .accordion-item.open .accordion-header::after {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            display: none;
+            padding: 0 14px 14px 14px;
+            font-size: 13px;
+            color: #495057;
+            line-height: 1.5;
+            border-top: 1px solid #e9ecef;
+            background: #ffffff;
+        }
+        .accordion-item.open .accordion-content {
+            display: block;
+        }
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        .meta-table td {
+            padding: 6px 0;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        .meta-table td:first-child {
+            font-weight: 600;
+            color: #6c757d;
+            width: 35%;
+            padding-right: 8px;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 6px;
         }
     </style>
 </head>
@@ -104,44 +152,93 @@
         </div>
 
         <div class="content-padding">
-            <!-- Добавили третью кнопку "Сайт" -->
+            <!-- Три новые вкладки -->
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('about')">О школе</button>
-                <button class="tab-btn" onclick="switchTab('directions')">Секции</button>
-                <button class="tab-btn" onclick="switchTab('website')">Сайт 🌐</button>
+                <button class="tab-btn active" onclick="switchTab(event, 'about')">О школе</button>
+                <button class="tab-btn" onclick="switchTab(event, 'education')">Обучение</button>
+                <button class="tab-btn" onclick="switchTab(event, 'infrastructure')">Инфраструктура</button>
             </div>
 
+            <!-- Вкладка 1: Сведения об образовательной организации -->
             <div id="about" class="tab-content active">
-                <div class="info-card">
-                    <h3>🏆 Олимпийский резерв</h3>
-                    <p>Воспитываем будущих чемпионок Новосибирской области с лучшим тренерским составом.</p>
+                <div class="accordion-item open">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Основные сведения</div>
+                    <div class="accordion-content">
+                        <table class="meta-table">
+                            <tr><td>Полное имя</td><td>ГАУ ДО НСО «СШОР по художественной гимнастике»</td></tr>
+                            <tr><td>Создана</td><td>26.09.2018 г.</td></tr>
+                            <tr><td>Учредители</td><td>Правительство НСО, Минспорта НСО, Департамент имущества НСО.</td></tr>
+                            <tr><td>Контакты</td><td>+7 (383) 209-10-94<br>officerg@nso.ru</td></tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="info-card">
-                    <h3>🏢 База тренировок</h3>
-                    <p>Краснообск, ул. Восточная, 29. Современные залы и профессиональное покрытие.</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Режим и график работы</div>
+                    <div class="accordion-content">
+                        <p><strong>Администрация:</strong><br>
+                        Пн – Чт: 09:00 - 18:00<br>
+                        Пт: 09:00 - 15:30<br>
+                        Обед: 13:00 - 13:30<br>
+                        Сб, Вс: выходные дни.</p>
+                    </div>
                 </div>
             </div>
 
-            <div id="directions" class="tab-content">
-                <div class="info-card">
-                    <h3>👶 Начальная подготовка</h3>
-                    <p>Группы для девочек от 4 до 6 лет. Развитие гибкости, растяжки и координации.</p>
+            <!-- Вкладка 2: Образование -->
+            <div id="education" class="tab-content">
+                <div class="accordion-item open">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Образовательные программы</div>
+                    <div class="accordion-content">
+                        <p>Школа реализует дополнительные образовательные программы спортивной подготовки по виду спорта <strong>«художественная гимнастика»</strong>.</p>
+                        <p>Программы разработаны в соответствии с федеральными стандартами спортивной подготовки.</p>
+                    </div>
                 </div>
-                <div class="info-card">
-                    <h3>🥈 Спортивные разряды</h3>
-                    <p>Углубленные тренировки, подготовка к соревнованиям и выполнение нормативов.</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Форма и сроки обучения</div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li><strong>Форма обучения:</strong> очная.</li>
+                            <li><strong>Язык образования:</strong> русский.</li>
+                            <li><strong>Гос. аккредитация:</strong> отсутствует (не предусмотрена для данных программ).</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- Вкладка: Официальный сайт -->
-            <div id="website" class="tab-content">
-                <iframe class="web-frame" src="https://rg.nso.ru/"></iframe>
+            <!-- Вкладка 3: Материально-техническое обеспечение -->
+            <div id="infrastructure" class="tab-content">
+                <div class="accordion-item open">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Основная база тренировок</div>
+                    <div class="accordion-content">
+                        <p><strong>Адрес:</strong> р.п. Краснообск, ул. Восточная, дом 29 (СОК «Армада»).</p>
+                        <p>База оснащена современными специализированными залами для художественной гимнастики, хореографическими станками, высокими потолками и профессиональным ковровым покрытием (помостами).</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Дополнительные залы в НСО</div>
+                    <div class="accordion-content">
+                        <p>Тренировки также осуществляются на базе спортивных объектов по адресам:</p>
+                        <ul>
+                            <li>ул. Ленинградская, д. 115</li>
+                            <li>ул. Курчатова, д. 37/1</li>
+                            <li>Вокзальная магистраль, д. 15</li>
+                            <li>Дачное шоссе, д. 6</li>
+                            <li>ул. Немировича-Данченко, д. 160</li>
+                            <li>ул. Часовая, д. 2/2</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        function switchTab(tabId) {
+        // Переключение основных вкладок
+        function switchTab(event, tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -151,6 +248,12 @@
 
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
+        }
+
+        // Логика работы аккордеона
+        function toggleAccordion(element) {
+            const item = element.parentElement;
+            item.classList.toggle('open');
         }
     </script>
 
